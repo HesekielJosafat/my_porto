@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hesekieljosafat</title>
+  <link rel="icon" type="image/png" href="images/favicon-round.png">
+  <!-- Google Fonts: Quicksand (Latin), Zen Maru Gothic (JP), & Noto Sans SC (CH Halus) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Quicksand:wght@500;600;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- Devicon (Ikon Tech Warna Asli) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+</head>
+<body>
+
+  <!-- ================= HEADER / NAVBAR (FLOATING BENTO STYLE) ================= -->
+  <header class="navbar-wrapper">
+    <div class="navbar">
+      <!-- Menu Navigasi (Kiri - Tengah) -->
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="active" data-i18n="nav_home">Home</a>
+        <a href="#about" data-i18n="nav_about">About</a>
+        <a href="#skills" data-i18n="nav_skills">Skills</a>
+        <a href="#projects" data-i18n="nav_projects">Projects</a>
+        <a href="#achievements" data-i18n="nav_achievements">Achievements</a>
+        <a href="#experiences" data-i18n="nav_experiences">Experiences</a>
+        <a href="#guestbook" data-i18n="nav_guestbook">Guestbook</a>
+      </nav>
+
+      <!-- Bagian Kanan: Avatar + Notifikasi + Dark/Light + Bahasa (Bendera) -->
+      <div class="nav-right">
+        <!-- Avatar Bulat -->
+        <a href="#home" class="nav-avatar" title="Profile">
+          <img src="images/ಇ_﹕kaoru hana wa rin to saku.jpeg" alt="Profile">
+        </a>
+
+        <!-- Tombol Lonceng Notifikasi Guestbook -->
+        <div class="notif-wrapper" id="notifWrapper">
+          <button type="button" class="notif-btn" id="notifBtn" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="notif-badge" id="notifBadge">0</span>
+          </button>
+
+          <!-- Dropdown Daftar Notifikasi -->
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-header">
+              <strong data-i18n="notif_title">Notifications</strong>
+              <button type="button" class="notif-clear-btn" id="notifMarkRead" data-i18n="notif_mark_read">Mark as read</button>
+            </div>
+            <div class="notif-list" id="notifList"></div>
+          </div>
+        </div>
+
+        <!-- Dark / Light Toggle -->
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Dark Mode">
+          <i class="fa-solid fa-sun sun-icon"></i>
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <i class="fa-solid fa-moon moon-icon"></i>
+        </button>
+
+        <!-- Language Selector dengan Bendera Dinamis (EN, ID, CH, JP) -->
+        <div class="lang-box">
+          <span class="lang-flag" id="langFlag"></span>
+          <select id="langSelect">
+            <option value="en">EN</option>
+            <option value="id">ID</option>
+            <option value="ch">CH</option>
+            <option value="jp">JP</option>
+          </select>
+        </div>
+
+        <!-- Hamburger Menu (Mobile) -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT (BENTO GRID) ================= -->
+  <main class="container">
+
+    <!-- SECTION 1: HERO BENTO -->
+    <section id="home" class="hero-bento">
+      
+      <!-- Kolom Kiri: Kartu Info Mini & Kartu Music -->
+      <div class="hero-left">
+        <!-- Kartu Info Mini (3 Slide Geser + Hold & Drag Scrollbar mirip Projects) -->
+        <div class="card mini-profile-card">
+          <div class="mini-slides-viewport">
+            <div class="mini-slides-track" id="miniSlidesTrack">
+
+              <!-- SLIDE 1: Birthday -->
+              <div class="mini-slide" id="miniSlide1">
+                <div class="mini-col-left">
+                  <div class="bd-header">
+                    <span class="label" data-i18n="bd_title">Birthday</span>
+                    <i class="fa-solid fa-cake-candles cake-icon"></i>
+                  </div>
+                  <div class="bd-date-row">
+                    <h2 class="big-blue">30</h2>
+                    <p class="sub-muted" id="bdMonthYear">June<br>2005</p>
+                  </div>
+                  <div class="hanzi-day" id="bdDayContainer">
+                    <span class="bd-day-text">Thursday</span>
+                  </div>
+                </div>
+                <div class="mini-divider"></div>
+                <div class="mini-col-right">
+                  <span class="pill-blue" data-i18n="personality_title">Personality</span>
+                  <p class="small-info">Kind, Ambivert, Thinker</p>
+                  <span class="pill-blue" data-i18n="hobby_title">Interests</span>
+                  <p class="small-info">UI/UX, Anime, Coding</p>
+                </div>
+              </div>
+
+              <!-- SLIDE 2: Active & Years Active -->
+              <div class="mini-slide" id="miniSlide2">
+                <div class="mini-col-left">
+                  <div class="active-badge">
+                    <span class="pulse-dot"></span>
+                    <div>
+                      <strong data-i18n="active_title">Active</strong>
+                      <small data-i18n="active_sub">Online</small>
+                    </div>
+                  </div>
+                  <div class="years-box">
+                    <span class="label" data-i18n="years_active">Years Active</span>
+                    <h2 class="big-blue year-num">2026</h2>
+                    <p class="sub-muted" data-i18n="present_text">- Present</p>
+                  </div>
+                </div>
+                <div class="mini-divider"></div>
+                <div class="mini-col-right">
+                  <span class="pill-blue" data-i18n="role_title">Role</span>
+                  <p class="small-info">IT Del Student</p>
+                  <span class="pill-blue" data-i18n="loc_title">Base</span>
+                  <p class="small-info">Indonesia</p>
+                </div>
+              </div>
+
+              <!-- SLIDE 3: Live Clock & Daily Date -->
+              <div class="mini-slide" id="miniSlide3">
+                <div class="mini-col-left">
+                  <span class="label" data-i18n="today_title">Today</span>
+                  <h2 class="big-blue clock-num" id="liveClock">00:00</h2>
+                  <p class="sub-muted" id="liveDate">Loading...</p>
+                </div>
+                <div class="mini-divider"></div>
+                <div class="mini-col-right">
+                  <span class="pill-blue" data-i18n="day_hanzi_title">Day</span>
+                  <p class="small-info" id="liveDayName">Sunday</p>
+                  <span class="pill-blue" data-i18n="tz_title">Local Time</span>
+                  <p class="small-info">WIB (UTC+7)</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Footer Kartu (Gaya Projects + Bar Bisa Di-Hold & Geser) -->
+          <div class="mini-card-footer">
+            <button class="mini-arrow-btn" id="miniPrevBtn" aria-label="Previous Info">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="mini-page-pill">
+              <span class="mini-counter" id="miniCounter">01 <small>/ 03</small></span>
+              <span class="page-sep">|</span>
+              <div class="mini-scroll-track" id="miniDragTrack" title="Tahan & geser">
+                <div class="mini-scroll-thumb" id="miniScrollThumb"></div>
+              </div>
+            </div>
+
+            <button class="mini-arrow-btn" id="miniNextBtn" aria-label="Next Info">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Kartu Music Widget (Real-time Audio Player) -->
+        <div class="card music-card">
+          <div class="album-art" id="albumArt">
+             <img id="songCover" src="" alt="Album Cover">
+          </div>
+          <div class="music-info">
+            <h4 id="songTitle"></h4>
+            <p id="songArtist"></p>
+          </div>
+          <div class="music-controls">
+            <button class="ctrl-btn" id="prevSongBtn" aria-label="Previous Song">
+              <i class="fa-solid fa-backward-step"></i>
+            </button>
+            <button class="play-btn" id="playBtn" aria-label="Play or Pause">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button class="ctrl-btn" id="nextSongBtn" aria-label="Next Song">
+              <i class="fa-solid fa-forward-step"></i>
+            </button>
+          </div>
+          <div class="music-progress-wrap">
+            <div class="progress-bar" id="songProgressBar">
+              <div class="progress-fill" id="songProgressFill"></div>
+            </div>
+            <div class="time-row">
+              <span id="currentTime">0:00</span>
+              <span id="totalDuration">0:00</span>
+            </div>
+          </div>
+          <audio id="audioPlayer"></audio>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Hero Banner Utama -->
+      <div class="hero-right">
+        <div class="card hero-main-card">
+          <div class="hero-text">
+            <span class="jp-sub" data-i18n="hero_welcome">Welcome to my space ✨</span>
+            <h1>
+              <span data-i18n="hero_hi">Hi, I'm</span><br>
+              <span class="highlight-text">Hesekiel Josafat Marbun</span>
+            </h1>
+            <div class="role-badge" data-i18n="hero_role">Student at Institut Teknologi Del</div>
+            <p class="hero-desc" data-i18n="hero_desc">
+              A student at Institut Teknologi Del who is passionate about learning web development, UI/UX design, and turning creative ideas into real projects.
+            </p>
+            <div class="hero-actions">
+              <a href="LINK-GOOGLE-DRIVE-ANDA" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                <i class="fa-regular fa-file-lines"></i> <span data-i18n="btn_cv">View CV</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Foto / Avatar Karakter Anda -->
+          <div class="hero-avatar">
+            <img src="images/ಇ_﹕kaoru hana wa rin to saku.jpeg" alt="Avatar" style="width:240px; border-radius:20px;">
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 2: ABOUT & SKILLS (Dengan Kontrol Scroll Vertikal ▲ Bar ▼ di Kanan) -->
+    <section class="bento-row-2">
+
+      <!-- About Me -->
+      <div id="about" class="card about-card">
+        <div class="card-header">
+          <h3><i class="fa-regular fa-face-smile"></i> <span data-i18n="about_title">About Me</span></h3>
+        </div>
+
+        <div class="v-scroll-wrapper">
+          <div class="v-scroll-box" id="aboutScrollBox">
+            <p data-i18n="about_text">
+              I'm a student at Institut Teknologi Del with a deep interest in languages and linguistics. Currently, I'm learning Mandarin, Japanese, and English. I truly enjoy peaceful moments, quiet atmospheres, and expressing creativity through clean, aesthetic designs.
+            </p>
+            <div class="about-hobbies">
+              <span class="tag" data-i18n="tag_1">#Linguistics</span>
+              <span class="tag" data-i18n="tag_2">#EN·CN·JP</span>
+              <span class="tag" data-i18n="tag_3">#Peaceful</span>
+              <span class="tag" data-i18n="tag_4">#Lofi & Anime</span>
+            </div>
+          </div>
+
+          <!-- Kontrol Vertikal: ▲ di atas, Bar di tengah, ▼ di bawah -->
+          <div class="v-scroll-controls">
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="aboutUpBtn" aria-label="Scroll Up">
+              <i class="fa-solid fa-chevron-up"></i>
+            </button>
+            <div class="v-scroll-track" id="aboutTrack" title="Tahan & geser ke bawah/atas">
+              <div class="v-scroll-thumb" id="aboutThumb"></div>
+            </div>
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="aboutDownBtn" aria-label="Scroll Down">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills (10 item per tampilan + Kontrol Vertikal ▲ Bar ▼) -->
+      <div id="skills" class="card skills-card">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-layer-group"></i> <span data-i18n="skills_title">Skills & Tech</span></h3>
+        </div>
+
+        <div class="v-scroll-wrapper">
+          <div class="v-scroll-box" id="skillsScrollBox">
+            <div class="skills-grid">
+              <div class="skill-item"><i class="devicon-html5-plain colored"></i> HTML</div>
+              <div class="skill-item"><i class="devicon-css3-plain colored"></i> CSS</div>
+              <div class="skill-item"><i class="devicon-javascript-plain colored"></i> JavaScript</div>
+              <div class="skill-item"><i class="devicon-laravel-plain colored"></i> Laravel</div>
+              <div class="skill-item"><i class="devicon-mysql-plain colored"></i> MySQL</div>
+              <div class="skill-item"><i class="devicon-postgresql-plain colored"></i> PostgreSQL</div>
+              <div class="skill-item"><i class="devicon-git-plain colored"></i> Git</div>
+              <div class="skill-item"><i class="devicon-github-original colored"></i> GitHub</div>
+              <div class="skill-item"><i class="devicon-kotlin-plain colored"></i> Kotlin</div>
+              <div class="skill-item"><i class="devicon-swift-plain colored"></i> Swift</div>
+              <div class="skill-item"><i class="devicon-flutter-plain colored"></i> Flutter</div>
+              <div class="skill-item"><i class="devicon-java-plain colored"></i> Java</div>
+              <div class="skill-item"><i class="devicon-python-plain colored"></i> Python</div>
+            </div>
+          </div>
+
+          <!-- Kontrol Vertikal: ▲ di atas, Bar di tengah, ▼ di bawah -->
+          <div class="v-scroll-controls">
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="skillsUpBtn" aria-label="Scroll Up">
+              <i class="fa-solid fa-chevron-up"></i>
+            </button>
+            <div class="v-scroll-track" id="skillsTrack" title="Tahan & geser ke bawah/atas">
+              <div class="v-scroll-thumb" id="skillsThumb"></div>
+            </div>
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="skillsDownBtn" aria-label="Scroll Down">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 3: PROJECTS (Gaya Bento Card + Hold & Drag Slider) -->
+    <section id="projects" class="card projects-bento-card">
+      <div class="card-header projects-header">
+        <h3><i class="fa-solid fa-laptop-code"></i> <span data-i18n="projects_title">Featured Projects</span></h3>
+
+        <!-- Kontrol Pagination + Bar Hold & Drag -->
+        <div class="card-pager" id="projPager">
+          <button type="button" class="mini-arrow-btn pager-prev" aria-label="Previous Projects">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="mini-page-pill pager-pill">
+            <span class="mini-counter pager-counter">01 <small>/ 02</small></span>
+            <span class="page-sep">|</span>
+            <div class="mini-scroll-track pager-track" title="Tahan & geser">
+              <div class="mini-scroll-thumb pager-thumb"></div>
+            </div>
+          </div>
+          <button type="button" class="mini-arrow-btn pager-next" aria-label="Next Projects">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="bento-viewport">
+        <div class="bento-track" id="projTrack">
+
+          <!-- Project 1 -->
+          <article class="project-card">
+            <div class="project-cover thumb-1">
+              <!-- <img src="images/project1.jpg" alt="Project 1"> -->
+              <i class="fa-solid fa-mug-hot"></i>
+              <span class="proj-badge badge-web" data-i18n="cat_web">Website</span>
+            </div>
+            <div class="project-body">
+              <h4 data-i18n="proj1_title">Campus Cafe Ordering Web</h4>
+              <p data-i18n="proj1_desc">A web-based food and beverage ordering platform featuring menu management, shopping cart, and transaction reports.</p>
+              <div class="proj-techs">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>Laravel</span>
+                <span>MySQL</span>
+              </div>
+              <div class="proj-actions">
+                <a href="#" class="btn-proj btn-view disabled" title="Demo belum tersedia">
+                  <i class="fa-solid fa-eye"></i> <span data-i18n="btn_view">View</span>
+                </a>
+                <a href="https://github.com/" target="_blank" class="btn-proj btn-code">
+                  <span data-i18n="btn_code">Code</span> <i class="fa-solid fa-code"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card">
+            <div class="project-cover thumb-2">
+              <!-- <img src="images/project2.jpg" alt="Project 2"> -->
+              <i class="fa-solid fa-mobile-screen-button"></i>
+              <span class="proj-badge badge-app" data-i18n="cat_app">Application</span>
+            </div>
+            <div class="project-body">
+              <h4 data-i18n="proj2_title">Language Flashcard App</h4>
+              <p data-i18n="proj2_desc">A mobile app to help learn Mandarin, Japanese, and English vocabulary using spaced repetition and audio.</p>
+              <div class="proj-techs">
+                <span>Flutter</span>
+                <span>Kotlin</span>
+                <span>PostgreSQL</span>
+              </div>
+              <div class="proj-actions">
+                <a href="#" target="_blank" class="btn-proj btn-view">
+                  <i class="fa-solid fa-eye"></i> <span data-i18n="btn_view">View</span>
+                </a>
+                <a href="https://github.com/" target="_blank" class="btn-proj btn-code">
+                  <span data-i18n="btn_code">Code</span> <i class="fa-solid fa-code"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card">
+            <div class="project-cover thumb-3">
+              <!-- <img src="images/project3.jpg" alt="Project 3"> -->
+              <i class="fa-solid fa-chart-line"></i>
+              <span class="proj-badge badge-data" data-i18n="cat_data">Analysis</span>
+            </div>
+            <div class="project-body">
+              <h4 data-i18n="proj3_title">Student Grade & Data Visualization</h4>
+              <p data-i18n="proj3_desc">Academic performance data analysis and interactive visualization using Python to map student grade trends.</p>
+              <div class="proj-techs">
+                <span>Python</span>
+                <span>MySQL</span>
+                <span>JavaScript</span>
+              </div>
+              <div class="proj-actions">
+                <a href="#" class="btn-proj btn-view disabled" title="Demo belum tersedia">
+                  <i class="fa-solid fa-eye"></i> <span data-i18n="btn_view">View</span>
+                </a>
+                <a href="https://github.com/" target="_blank" class="btn-proj btn-code">
+                  <span data-i18n="btn_code">Code</span> <i class="fa-solid fa-code"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4 (Muncul di Halaman 2) -->
+          <article class="project-card">
+            <div class="project-cover thumb-1">
+              <!-- <img src="images/project4.jpg" alt="Project 4"> -->
+              <i class="fa-solid fa-book-open"></i>
+              <span class="proj-badge badge-web" data-i18n="cat_web">Website</span>
+            </div>
+            <div class="project-body">
+              <h4 data-i18n="proj4_title">Personal Bento Portfolio</h4>
+              <p data-i18n="proj4_desc">An interactive Bento UI portfolio website featuring Dark Mode, Multi-language (EN, ID, CH, JP), and a real-time music player.</p>
+              <div class="proj-techs">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+              </div>
+              <div class="proj-actions">
+                <a href="#home" class="btn-proj btn-view">
+                  <i class="fa-solid fa-eye"></i> <span data-i18n="btn_view">View</span>
+                </a>
+                <a href="https://github.com/" target="_blank" class="btn-proj btn-code">
+                  <span data-i18n="btn_code">Code</span> <i class="fa-solid fa-code"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+<!-- SECTION 4: ACHIEVEMENTS & EXPERIENCES (Bento 2 Kolom + Hold-to-Drag Slider) -->
+    <section class="bento-row-2">
+
+      <!-- Kolom Kiri: Achievements (4 item per halaman) -->
+      <div id="achievements" class="card">
+        <div class="card-header slider-header">
+          <h3><i class="fa-solid fa-award"></i> <span data-i18n="ach_title">Achievements</span></h3>
+
+          <!-- Kontrol Pagination + Bar Hold & Drag -->
+          <div class="card-pager" id="achPager">
+            <button type="button" class="mini-arrow-btn pager-prev" aria-label="Previous Achievements">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="mini-page-pill pager-pill">
+              <span class="mini-counter pager-counter">01 <small>/ 01</small></span>
+              <span class="page-sep">|</span>
+              <div class="mini-scroll-track pager-track" title="Tahan & geser">
+                <div class="mini-scroll-thumb pager-thumb"></div>
+              </div>
+            </div>
+            <button type="button" class="mini-arrow-btn pager-next" aria-label="Next Achievements">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="bento-viewport">
+          <div class="bento-track" id="achTrack">
+            <!-- Achievement 1 (Oracle) -->
+            <div class="ach-card" tabindex="0">
+              <div class="ach-img-box" data-pdf="pdf/Oracle Cloud Infrastructure Certified Architect Associate.pdf">
+                <div class="ach-placeholder">
+                  <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                  <span data-i18n="pdf_cert"></span>
+                </div>
+                <div class="ach-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> <span data-i18n="click_preview"></span></div>
+              </div>
+              <h4 class="ach-issuer" data-i18n="ach1_issuer"></h4>
+              <p class="ach-title" data-i18n="ach1_title"></p>
+              <span class="ach-date" data-i18n="ach1_date"></span>
+            </div>
+
+            <!-- Achievement 2 (Oracle) -->
+            <div class="ach-card" tabindex="0">
+              <div class="ach-img-box" data-pdf="pdf/Oracle Data Center Operations Certified Foundations Associate.pdf">
+                <div class="ach-placeholder">
+                  <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                  <span data-i18n="pdf_cert"></span>
+                </div>
+                <div class="ach-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> <span data-i18n="click_preview"></span></div>
+              </div>
+              <h4 class="ach-issuer" data-i18n="ach2_issuer"></h4>
+              <p class="ach-title" data-i18n="ach2_title"></p>
+              <span class="ach-date" data-i18n="ach2_date"></span>
+            </div>
+
+            <!-- Achievement 3 (DDC 2025) -->
+            <div class="ach-card" tabindex="0">
+              <div class="ach-img-box" data-pdf="pdf/Certificate of Committee DDC2025.pdf">
+                <div class="ach-placeholder">
+                  <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                  <span data-i18n="pdf_cert"></span>
+                </div>
+                <div class="ach-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> <span data-i18n="click_preview"></span></div>
+              </div>
+              <h4 class="ach-issuer" data-i18n="ach3_issuer"></h4>
+              <p class="ach-title" data-i18n="ach3_title"></p>
+              <span class="ach-date" data-i18n="ach3_date"></span>
+            </div>
+
+            <!-- Achievement 4 (DDC 2026) -->
+            <div class="ach-card" tabindex="0">
+              <div class="ach-img-box" data-pdf="pdf/SERTIFIKAT DEL DEBATE CHAMPIONSHIP 2026.pdf">
+                <div class="ach-placeholder">
+                  <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                  <span data-i18n="pdf_cert"></span>
+                </div>
+                <div class="ach-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> <span data-i18n="click_preview"></span></div>
+              </div>
+              <h4 class="ach-issuer" data-i18n="ach4_issuer"></h4>
+              <p class="ach-title" data-i18n="ach4_title"></p>
+              <span class="ach-date" data-i18n="ach4_date"></span>
+            </div>
+
+            <!-- Achievement 5 (DEPKEBDIS 2025) -->
+            <div class="ach-card" tabindex="0">
+              <div class="ach-img-box" data-pdf="pdf/Sertifikat BEM 2024_2025.pdf">
+                <div class="ach-placeholder">
+                  <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                  <span data-i18n="pdf_cert"></span>
+                </div>
+                <div class="ach-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> <span data-i18n="click_preview"></span></div>
+              </div>
+              <h4 class="ach-issuer" data-i18n="ach5_issuer"></h4>
+              <p class="ach-title" data-i18n="ach5_title"></p>
+              <span class="ach-date" data-i18n="ach5_date"></span>
+            </div>
+
+            <!-- Nanti kalau mau tambah Achievement ke-5, ke-6, dst., tinggal copy-paste .ach-card di sini! -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Experiences (3 item per halaman) -->
+      <div id="experiences" class="card">
+        <div class="card-header slider-header">
+          <h3><i class="fa-solid fa-briefcase"></i> <span data-i18n="exp_title">Experiences</span></h3>
+
+          <!-- Kontrol Pagination + Bar Hold & Drag -->
+          <div class="card-pager" id="expPager">
+            <button type="button" class="mini-arrow-btn pager-prev" aria-label="Previous Experiences">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="mini-page-pill pager-pill">
+              <span class="mini-counter pager-counter">01 <small>/ 01</small></span>
+              <span class="page-sep">|</span>
+              <div class="mini-scroll-track pager-track" title="Tahan & geser">
+                <div class="mini-scroll-thumb pager-thumb"></div>
+              </div>
+            </div>
+            <button type="button" class="mini-arrow-btn pager-next" aria-label="Next Experiences">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="bento-viewport">
+          <div class="bento-track" id="expTrack">
+            <!-- Experience 1 -->
+            <div class="timeline-item exp-card">
+              <div class="exp-top-row">
+                <span class="time-badge" data-i18n="exp1_date">2025 - Present</span>
+                <button type="button" class="exp-photo-btn" data-img="">
+                  <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
+                </button>
+              </div>
+              <h4 data-i18n="exp1_title">Campus Organization / Committee</h4>
+              <p class="exp-org" data-i18n="exp1_org">Institut Teknologi Del</p>
+              <p class="exp-desc" data-i18n="exp1_desc">Aktif berpartisipasi dalam kegiatan kemahasiswaan, kerja tim, serta melatih kemampuan komunikasi dan kepemimpinan di lingkungan kampus.</p>
+            </div>
+
+            <!-- Experience 2 -->
+            <div class="timeline-item exp-card">
+              <div class="exp-top-row">
+                <span class="time-badge" data-i18n="exp2_date">2024 - 2025</span>
+                <button type="button" class="exp-photo-btn" data-img="">
+                  <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
+                </button>
+              </div>
+              <h4 data-i18n="exp2_title">Academic Web & App Projects</h4>
+              <p class="exp-org" data-i18n="exp2_org">Informatics / IT Del Coursework</p>
+              <p class="exp-desc" data-i18n="exp2_desc">Merancang dan membangun berbagai proyek tugas kuliah mulai dari desain UI/UX di Figma hingga implementasi web dan mobile bersama tim.</p>
+            </div>
+
+            <!-- Experience 3 -->
+            <div class="timeline-item exp-card">
+              <div class="exp-top-row">
+                <span class="time-badge" data-i18n="exp3_date">2024 - Present</span>
+                <button type="button" class="exp-photo-btn" data-img="">
+                  <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
+                </button>
+              </div>
+              <h4 data-i18n="exp3_title">Independent Language & Tech Learner</h4>
+              <p class="exp-org" data-i18n="exp3_org">Self-Study (EN, CN, JP)</p>
+              <p class="exp-desc" data-i18n="exp3_desc">Mendalami ilmu linguistik dan belajar mandiri tiga bahasa (Inggris, Mandarin, Jepang) sambil mengasah keterampilan desain antarmuka web.</p>
+            </div>
+
+            <!-- Nanti kalau mau tambah Experience ke-4, ke-5, dst., tinggal copy-paste .timeline-item di sini! -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- MODAL PRATINJAU SERTIFIKAT & FOTO EXPERIENCE (LIGHTBOX) -->
+    <div class="ach-modal" id="achModal" aria-hidden="true">
+      <div class="ach-modal-content">
+        <button class="ach-modal-close" id="achModalClose" aria-label="Close Preview">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h3 id="modalIssuer" class="modal-issuer">Issuer</h3>
+        <div class="modal-preview-area" id="modalPreviewArea"></div>
+        <p id="modalTitle" class="modal-title">Title</p>
+        <span id="modalDate" class="modal-date">Date</span>
+      </div>
+    </div>
+
+    <!-- SECTION 5: VISITOR NOTE WALL (Desain Orisinal Bento 2 Kolom) -->
+    <section id="guestbook" class="card guestbook-card">
+      <div class="card-header">
+        <h3><i class="fa-regular fa-note-sticky"></i> <span data-i18n="guest_title">Visitor Notes</span></h3>
+      </div>
+
+      <div class="guest-bento-layout">
+
+        <!-- Kolom Kiri: Form Tulis Catatan + Pilihan Vibe -->
+        <form class="guest-compose-box" id="guestForm">
+          <h4 class="compose-title" data-i18n="guest_compose_title">Leave a Note ✨</h4>
+          <p class="guest-subtitle" data-i18n="guest_sub">
+            Share a thought, feedback, or just say hello!
+          </p>
+
+          <!-- Pilihan Tag/Vibe -->
+          <div class="vibe-picker" id="vibePicker">
+            <button type="button" class="vibe-chip active" data-vibe="✨ Aesthetic">✨ Aesthetic</button>
+            <button type="button" class="vibe-chip" data-vibe="💻 Inspiring">💻 Inspiring</button>
+            <button type="button" class="vibe-chip" data-vibe="👋 Say Hi">👋 Say Hi</button>
+            <button type="button" class="vibe-chip" data-vibe="🤝 Collab">🤝 Collab</button>
+          </div>
+
+          <input type="text" id="guestName" placeholder="Name" data-i18n-placeholder="ph_name" required>
+          <input type="email" id="guestEmail" placeholder="Email" data-i18n-placeholder="ph_email" required>
+          <textarea id="guestMsg" rows="3" placeholder="Type your message..." data-i18n-placeholder="ph_guest_msg" required></textarea>
+
+          <button type="submit" class="btn-post-note">
+            <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_post_note">Post Note</span>
+          </button>
+        </form>
+
+        <!-- Kolom Kanan: Dinding Kartu Catatan 2 Kolom + Vertical Scroll -->
+        <div class="v-scroll-wrapper guest-wall-scroll">
+          <div class="v-scroll-box" id="guestScrollBox">
+            <div class="notes-grid" id="chatFeed">
+
+              <!-- Contoh Catatan 1 -->
+              <div class="note-card">
+                <div class="note-top">
+                  <div class="note-author">
+                    <span class="note-avatar">R</span>
+                    <div>
+                      <strong>Raka Pratama</strong>
+                      <small>23/11/2026</small>
+                    </div>
+                  </div>
+                  <span class="note-vibe">✨ Aesthetic</span>
+                </div>
+                <p class="note-text">Keren banget portofolio Bento UI-nya! Warna birunya adem banget dilihat.</p>
+              </div>
+
+              <!-- Contoh Catatan 2 -->
+              <div class="note-card">
+                <div class="note-top">
+                  <div class="note-author">
+                    <span class="note-avatar">S</span>
+                    <div>
+                      <strong>Sora</strong>
+                      <small>21/11/2026</small>
+                    </div>
+                  </div>
+                  <span class="note-vibe">💻 Inspiring</span>
+                </div>
+                <p class="note-text">Suka banget sama fitur ganti 4 bahasa dan pemutar musiknya, sangat rapi!</p>
+              </div>
+
+              <!-- Contoh Catatan 3 -->
+              <div class="note-card">
+                <div class="note-top">
+                  <div class="note-author">
+                    <span class="note-avatar">K</span>
+                    <div>
+                      <strong>Kevin</strong>
+                      <small>18/11/2026</small>
+                    </div>
+                  </div>
+                  <span class="note-vibe">👋 Say Hi</span>
+                </div>
+                <p class="note-text">Semangat kuliahnya di IT Del dan belajar 3 bahasanya!</p>
+              </div>
+
+              <!-- Contoh Catatan 4 -->
+              <div class="note-card">
+                <div class="note-top">
+                  <div class="note-author">
+                    <span class="note-avatar">A</span>
+                    <div>
+                      <strong>Ayu</strong>
+                      <small>15/11/2026</small>
+                    </div>
+                  </div>
+                  <span class="note-vibe">🤝 Collab</span>
+                </div>
+                <p class="note-text">Desainnya bersih dan nyaman di mata, sukses terus proyek ke depannya!</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Kontrol Vertikal: ▲ -> Bar -> ▼ -->
+          <div class="v-scroll-controls">
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="guestUpBtn" aria-label="Scroll Up">
+              <i class="fa-solid fa-chevron-up"></i>
+            </button>
+            <div class="v-scroll-track" id="guestTrack" title="Tahan & geser ke bawah/atas">
+              <div class="v-scroll-thumb" id="guestThumb"></div>
+            </div>
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="guestDownBtn" aria-label="Scroll Down">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER (BLUE BENTO STYLE) ================= -->
+  <footer class="footer-wrapper">
+    <div class="card footer-card">
+      <div class="footer-grid">
+
+        <!-- Kolom Kiri: Nama & Penutup -->
+        <div class="footer-col">
+          <h3 class="footer-name">Nama Lengkap Anda</h3>
+          <p data-i18n="footer_desc">Thank you for visiting my personal portfolio website. Connect with me over socials.</p>
+          <span class="footer-quote">Keep Rising 🚀</span>
+        </div>
+
+        <!-- Kolom Kanan: Contact Info & 5 Sosmed -->
+        <div class="footer-col footer-contact-col">
+          <h4 data-i18n="footer_contact">Contact Info</h4>
+          <ul class="footer-contact-list">
+            <li><i class="fa-solid fa-phone"></i> <span>+62 812-3456-7890</span></li>
+            <li><i class="fa-solid fa-envelope"></i> <span>emailanda@gmail.com</span></li>
+            <li><i class="fa-solid fa-location-dot"></i> <span data-i18n="collab_loc">IT Del, North Sumatra, Indonesia</span></li>
+          </ul>
+
+          <div class="footer-socials">
+            <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="mailto:emailanda@gmail.com" aria-label="Gmail"><i class="fa-solid fa-envelope"></i></a>
+            <a href="#" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 <span class="highlight-text">Nama Lengkap Anda</span> . All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
