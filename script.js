@@ -608,6 +608,36 @@ function updateBirthdayByLang(lang) {
   if (bdDayContainer) bdDayContainer.innerHTML = data.dayHtml;
 }
 
+const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえお文✦•';
+
+function scrambleText(el, finalText) {
+  if (!el || !finalText) return;
+  clearInterval(el._scrambleTimer);
+  let frame = 0;
+  const totalFrames = 14;
+
+  el._scrambleTimer = setInterval(() => {
+    frame++;
+    const progress = frame / totalFrames;
+    const revealedCount = Math.floor(progress * finalText.length);
+
+    let output = '';
+    for (let i = 0; i < finalText.length; i++) {
+      if (finalText[i] === ' ' || i < revealedCount) {
+        output += finalText[i];
+      } else {
+        output += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+      }
+    }
+    el.textContent = output;
+
+    if (frame >= totalFrames) {
+      clearInterval(el._scrambleTimer);
+      el.textContent = finalText;
+    }
+  }, 24);
+}
+
 function setLanguage(lang) {
   if (langFlag) langFlag.innerHTML = flagSvgs[lang] || flagSvgs.en;
   if (typeof renderNotifications === 'function') renderNotifications();
@@ -617,7 +647,12 @@ function setLanguage(lang) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (translations[lang] && translations[lang][key]) {
-      el.textContent = translations[lang][key];
+      const nextText = translations[lang][key];
+      if (el.closest('.card-header h3') || key === 'hero_hi') {
+        scrambleText(el, nextText);
+      } else {
+        el.textContent = nextText;
+      }
     }
   });
 
@@ -1271,9 +1306,19 @@ if (notifMarkRead) {
 setLanguage(langSelect ? (langSelect.value || 'en') : 'en');
 setInterval(updateLiveClock, 1000);
 
-// ================= 12. INTERACTIVE TRANSITIONS, SCROLL REVEAL & CLICK RIPPLE FX =================
+// ================= 12. INTERACTIVE TRANSITIONS, TEXT DECODE, SPOTLIGHT & CURSOR HALO =================
 
-// A. Garis Progres Scroll & Auto-Highlight Menu Header saat Scroll
+// Otomatis sisipkan Equalizer Bar di bawah nama artis pada Music Card
+const musicInfoEl = document.querySelector('.music-info');
+if (musicInfoEl && !document.getElementById('musicEq')) {
+  const eq = document.createElement('div');
+  eq.id = 'musicEq';
+  eq.className = 'music-eq';
+  eq.innerHTML = '<span></span><span></span><span></span><span></span><span></span>';
+  musicInfoEl.appendChild(eq);
+}
+
+// A. Garis Progres Scroll, Auto-Highlight Menu & Parallax Ornamen Samping
 const scrollProgress = document.getElementById('scrollProgress');
 const trackedSections = ['home', 'about', 'skills', 'projects', 'achievements', 'experiences', 'guestbook']
   .map(id => document.getElementById(id))
@@ -1282,30 +1327,29 @@ const trackedSections = ['home', 'about', 'skills', 'projects', 'achievements', 
 function handleScrollUI() {
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const sideArtLeft = document.getElementById('sideArtLeft');
-  const sideArtRight = document.getElementById('sideArtRight');
-  if (sideArtLeft) sideArtLeft.style.transform = `translateY(${scrollTop * -0.05}px)`;
-  if (sideArtRight) sideArtRight.style.transform = `translateY(${scrollTop * 0.04}px)`;
   if (scrollProgress && docHeight > 0) {
     scrollProgress.style.width = `${(scrollTop / docHeight) * 100}%`;
   }
 
   let currentId = 'home';
   trackedSections.forEach(sec => {
-    const top = sec.getBoundingClientRect().top;
-    if (top <= 180) currentId = sec.id;
+    if (sec.getBoundingClientRect().top <= 180) currentId = sec.id;
   });
 
   navItems.forEach(link => {
-    const href = link.getAttribute('href');
-    link.classList.toggle('active', href === `#${currentId}`);
+    link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
   });
+
+  const sideArtLeft = document.getElementById('sideArtLeft');
+  const sideArtRight = document.getElementById('sideArtRight');
+  if (sideArtLeft) sideArtLeft.style.transform = `translateY(${scrollTop * -0.05}px)`;
+  if (sideArtRight) sideArtRight.style.transform = `translateY(${scrollTop * 0.04}px)`;
 }
 
 window.addEventListener('scroll', handleScrollUI, { passive: true });
 handleScrollUI();
 
-// B. Animasi Kartu Muncul Halus saat Di-Scroll (Scroll Reveal)
+// B. Scroll Reveal + Text Decode pada Judul Kartu Saat Masuk Layar
 const allBentoCards = document.querySelectorAll('.card');
 allBentoCards.forEach(card => card.classList.add('reveal-card'));
 
@@ -1313,14 +1357,30 @@ const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
+      const headerSpan = entry.target.querySelector('.card-header h3 span[data-i18n]');
+      if (headerSpan && headerSpan.textContent) {
+        scrambleText(headerSpan, headerSpan.textContent);
+      }
       revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.08 });
+}, { threshold: 0.1 });
 
 allBentoCards.forEach(card => revealObserver.observe(card));
 
-// C. Efek Parallax Halus Saat Mouse Bergerak di Atas Hero Card
+// C. Card Cursor Spotlight (Cahaya Mengikuti Mouse di Semua Kartu) + Parallax Hero
+allBentoCards.forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.setProperty('--mx', '-400px');
+    card.style.setProperty('--my', '-400px');
+  });
+});
+
 const heroMainCard = document.querySelector('.hero-main-card');
 const heroAvatar = document.querySelector('.hero-avatar');
 const heroWaveSvg = document.getElementById('heroWaveSvg');
@@ -1347,7 +1407,7 @@ if (heroMainCard) {
   });
 }
 
-// D. Canvas: Partikel Cahaya Mengambang + Efek Riak & Bintang Setiap Kali Klik
+// D. Canvas: Partikel Cahaya, Spring Cursor Halo & Riak Klik Berkilau
 const fxCanvas = document.getElementById('fxCanvas');
 if (fxCanvas) {
   const ctx = fxCanvas.getContext('2d');
@@ -1359,8 +1419,19 @@ if (fxCanvas) {
     height = fxCanvas.height = window.innerHeight;
   });
 
-  // Partikel debu cahaya lembut di latar
-  const ambientMotes = Array.from({ length: 24 }, () => ({
+  let mouseX = -200, mouseY = -200;
+  let haloX = -200, haloY = -200;
+  let haloRadius = 12;
+  let targetHaloRadius = 12;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    const isInteractive = e.target.closest('a, button, select, input, textarea, .ach-card');
+    targetHaloRadius = isInteractive ? 20 : 12;
+  });
+
+  const ambientMotes = Array.from({ length: 26 }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
     r: Math.random() * 1.8 + 0.8,
@@ -1373,17 +1444,17 @@ if (fxCanvas) {
   const sparks = [];
 
   window.addEventListener('click', (e) => {
-    ripples.push({ x: e.clientX, y: e.clientY, r: 4, alpha: 0.55 });
-    for (let i = 0; i < 7; i++) {
-      const angle = (Math.PI * 2 * i) / 7 + Math.random() * 0.4;
-      const speed = Math.random() * 2.2 + 1.2;
+    ripples.push({ x: e.clientX, y: e.clientY, r: 4, alpha: 0.6 });
+    for (let i = 0; i < 8; i++) {
+      const angle = (Math.PI * 2 * i) / 8 + Math.random() * 0.35;
+      const speed = Math.random() * 2.4 + 1.2;
       sparks.push({
         x: e.clientX,
         y: e.clientY,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         size: Math.random() * 2.2 + 1.5,
-        alpha: 0.9
+        alpha: 0.95
       });
     }
   });
@@ -1391,9 +1462,21 @@ if (fxCanvas) {
   function animateFX() {
     ctx.clearRect(0, 0, width, height);
     const isDark = document.body.classList.contains('dark-mode');
-    const baseColor = isDark ? '134, 180, 240' : '83, 135, 208';
+    const baseColor = isDark ? '134, 180, 240' : '75, 128, 204';
 
-    // Gambar partikel latar mengambang
+    // Spring Cursor Halo mengikuti mouse dengan lembut
+    haloX += (mouseX - haloX) * 0.16;
+    haloY += (mouseY - haloY) * 0.16;
+    haloRadius += (targetHaloRadius - haloRadius) * 0.18;
+
+    if (mouseX > 0 && mouseY > 0) {
+      ctx.beginPath();
+      ctx.arc(haloX, haloY, haloRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${baseColor}, 0.38)`;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+
     ambientMotes.forEach(m => {
       m.x += m.vx;
       m.y += m.vy;
@@ -1407,15 +1490,11 @@ if (fxCanvas) {
       ctx.fill();
     });
 
-    // Gambar riak klik
     for (let i = ripples.length - 1; i >= 0; i--) {
       const rp = ripples[i];
-      rp.r += 2.2;
+      rp.r += 2.3;
       rp.alpha -= 0.02;
-      if (rp.alpha <= 0) {
-        ripples.splice(i, 1);
-        continue;
-      }
+      if (rp.alpha <= 0) { ripples.splice(i, 1); continue; }
       ctx.beginPath();
       ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
       ctx.strokeStyle = `rgba(${baseColor}, ${rp.alpha})`;
@@ -1423,7 +1502,6 @@ if (fxCanvas) {
       ctx.stroke();
     }
 
-    // Gambar percikan bintang klik
     for (let i = sparks.length - 1; i >= 0; i--) {
       const sp = sparks[i];
       sp.x += sp.vx;
@@ -1431,10 +1509,7 @@ if (fxCanvas) {
       sp.vx *= 0.95;
       sp.vy *= 0.95;
       sp.alpha -= 0.032;
-      if (sp.alpha <= 0) {
-        sparks.splice(i, 1);
-        continue;
-      }
+      if (sp.alpha <= 0) { sparks.splice(i, 1); continue; }
       ctx.beginPath();
       ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${baseColor}, ${sp.alpha})`;
