@@ -218,26 +218,34 @@
           </div>
         </div>
 
-        <!-- Kartu Music Widget (Real-time Audio Player) -->
+        <!-- Kartu Music Widget (Vinyl Record + Shuffle + Playlist) -->
         <div class="card music-card">
           <div class="album-art" id="albumArt">
-             <img id="songCover" src="" alt="Album Cover">
+            <img id="songCover" src="" alt="Album Cover">
           </div>
           <div class="music-info">
-            <h4 id="songTitle"></h4>
-            <p id="songArtist"></p>
+            <h4 id="songTitle">Judul Lagu</h4>
+            <p id="songArtist">Nama Penyanyi</p>
           </div>
+
           <div class="music-controls">
-            <button class="ctrl-btn" id="prevSongBtn" aria-label="Previous Song">
+            <button type="button" class="ctrl-btn" id="shuffleBtn" title="Shuffle" aria-label="Shuffle">
+              <i class="fa-solid fa-shuffle"></i>
+            </button>
+            <button type="button" class="ctrl-btn" id="prevSongBtn" aria-label="Previous Song">
               <i class="fa-solid fa-backward-step"></i>
             </button>
-            <button class="play-btn" id="playBtn" aria-label="Play or Pause">
+            <button type="button" class="play-btn" id="playBtn" aria-label="Play or Pause">
               <i class="fa-solid fa-play"></i>
             </button>
-            <button class="ctrl-btn" id="nextSongBtn" aria-label="Next Song">
+            <button type="button" class="ctrl-btn" id="nextSongBtn" aria-label="Next Song">
               <i class="fa-solid fa-forward-step"></i>
             </button>
+            <button type="button" class="ctrl-btn" id="playlistBtn" title="Playlist" aria-label="Playlist">
+              <i class="fa-solid fa-list-ul"></i>
+            </button>
           </div>
+
           <div class="music-progress-wrap">
             <div class="progress-bar" id="songProgressBar">
               <div class="progress-fill" id="songProgressFill"></div>
@@ -247,9 +255,21 @@
               <span id="totalDuration">0:00</span>
             </div>
           </div>
+
+          <!-- Laci Daftar Lagu (Muncul di dalam kartu saat tombol List diklik) -->
+          <div class="playlist-drawer" id="playlistDrawer">
+            <div class="playlist-header">
+              <strong data-i18n="playlist_title">Playlist</strong>
+              <button type="button" class="playlist-close" id="closePlaylistBtn" aria-label="Close Playlist">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div class="playlist-items" id="musicPlaylistEl"></div>
+          </div>
+
           <audio id="audioPlayer"></audio>
         </div>
-      </div>
+      </div>  
 
       <!-- Kolom Kanan: Hero Banner Utama -->
       <div class="hero-right">
@@ -624,71 +644,71 @@
         </div>
       </div>
 
-      <!-- Kolom Kanan: Experiences (3 item per halaman) -->
+      <!-- Kolom Kanan: Experiences (Timeline Vertikal + Scroll ▲ Bar ▼) -->
       <div id="experiences" class="card">
-        <div class="card-header slider-header">
+        <div class="card-header">
           <h3><i class="fa-solid fa-briefcase"></i> <span data-i18n="exp_title">Experiences</span></h3>
-
-          <!-- Kontrol Pagination + Bar Hold & Drag -->
-          <div class="card-pager" id="expPager">
-            <button type="button" class="mini-arrow-btn pager-prev" aria-label="Previous Experiences">
-              <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <div class="mini-page-pill pager-pill">
-              <span class="mini-counter pager-counter">01 <small>/ 01</small></span>
-              <span class="page-sep">|</span>
-              <div class="mini-scroll-track pager-track" title="Tahan & geser">
-                <div class="mini-scroll-thumb pager-thumb"></div>
-              </div>
-            </div>
-            <button type="button" class="mini-arrow-btn pager-next" aria-label="Next Experiences">
-              <i class="fa-solid fa-chevron-right"></i>
-            </button>
-          </div>
         </div>
 
-        <div class="bento-viewport">
-          <div class="bento-track" id="expTrack">
-            <!-- Experience 1 -->
-            <div class="timeline-item exp-card">
-              <div class="exp-top-row">
-                <span class="time-badge" data-i18n="exp1_date">2025 - Present</span>
-                <button type="button" class="exp-photo-btn" data-img="">
-                  <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
-                </button>
-              </div>
-              <h4 data-i18n="exp1_title">Campus Organization / Committee</h4>
-              <p class="exp-org" data-i18n="exp1_org">Institut Teknologi Del</p>
-              <p class="exp-desc" data-i18n="exp1_desc">Aktif berpartisipasi dalam kegiatan kemahasiswaan, kerja tim, serta melatih kemampuan komunikasi dan kepemimpinan di lingkungan kampus.</p>
-            </div>
+        <div class="v-scroll-wrapper exp-scroll-wrap">
+          <div class="v-scroll-box" id="expScrollBox">
+            <div class="timeline">
 
-            <!-- Experience 2 -->
-            <div class="timeline-item exp-card">
-              <div class="exp-top-row">
-                <span class="time-badge" data-i18n="exp2_date">2024 - 2025</span>
-                <button type="button" class="exp-photo-btn" data-img="">
-                  <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
-                </button>
+              <!-- Experience 1 -->
+              <div class="timeline-item exp-card">
+                <div class="exp-top-row">
+                  <span class="time-badge" data-i18n="exp1_date">2025 - Present</span>
+                  <button type="button" class="exp-photo-btn" data-img="">
+                    <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
+                  </button>
+                </div>
+                <h4 data-i18n="exp1_title">Campus Organization / Committee</h4>
+                <p class="exp-org" data-i18n="exp1_org">Institut Teknologi Del</p>
+                <p class="exp-desc" data-i18n="exp1_desc">Aktif berpartisipasi dalam kegiatan kemahasiswaan, kerja tim, serta melatih kemampuan komunikasi dan kepemimpinan di lingkungan kampus.</p>
               </div>
-              <h4 data-i18n="exp2_title">Academic Web & App Projects</h4>
-              <p class="exp-org" data-i18n="exp2_org">Informatics / IT Del Coursework</p>
-              <p class="exp-desc" data-i18n="exp2_desc">Merancang dan membangun berbagai proyek tugas kuliah mulai dari desain UI/UX di Figma hingga implementasi web dan mobile bersama tim.</p>
-            </div>
 
-            <!-- Experience 3 -->
-            <div class="timeline-item exp-card">
-              <div class="exp-top-row">
-                <span class="time-badge" data-i18n="exp3_date">2024 - Present</span>
-                <button type="button" class="exp-photo-btn" data-img="">
-                  <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
-                </button>
+              <!-- Experience 2 -->
+              <div class="timeline-item exp-card">
+                <div class="exp-top-row">
+                  <span class="time-badge" data-i18n="exp2_date">2024 - 2025</span>
+                  <button type="button" class="exp-photo-btn" data-img="">
+                    <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
+                  </button>
+                </div>
+                <h4 data-i18n="exp2_title">Academic Web & App Projects</h4>
+                <p class="exp-org" data-i18n="exp2_org">Informatics / IT Del Coursework</p>
+                <p class="exp-desc" data-i18n="exp2_desc">Merancang dan membangun berbagai proyek tugas kuliah mulai dari desain UI/UX di Figma hingga implementasi web dan mobile bersama tim.</p>
               </div>
-              <h4 data-i18n="exp3_title">Independent Language & Tech Learner</h4>
-              <p class="exp-org" data-i18n="exp3_org">Self-Study (EN, CN, JP)</p>
-              <p class="exp-desc" data-i18n="exp3_desc">Mendalami ilmu linguistik dan belajar mandiri tiga bahasa (Inggris, Mandarin, Jepang) sambil mengasah keterampilan desain antarmuka web.</p>
-            </div>
 
-            <!-- Nanti kalau mau tambah Experience ke-4, ke-5, dst., tinggal copy-paste .timeline-item di sini! -->
+              <!-- Experience 3 -->
+              <div class="timeline-item exp-card">
+                <div class="exp-top-row">
+                  <span class="time-badge" data-i18n="exp3_date">2024 - Present</span>
+                  <button type="button" class="exp-photo-btn" data-img="">
+                    <i class="fa-regular fa-image"></i> <span data-i18n="btn_photo">View Photo</span>
+                  </button>
+                </div>
+                <h4 data-i18n="exp3_title">Independent Language & Tech Learner</h4>
+                <p class="exp-org" data-i18n="exp3_org">Self-Study (EN, CN, JP)</p>
+                <p class="exp-desc" data-i18n="exp3_desc">Mendalami ilmu linguistik dan belajar mandiri tiga bahasa (Inggris, Mandarin, Jepang) sambil mengasah keterampilan desain antarmuka web.</p>
+              </div>
+
+              <!-- Nanti kalau mau tambah Experience ke-4, ke-5, dst., tinggal copy-paste .timeline-item di sini! -->
+
+            </div>
+          </div>
+
+          <!-- Kontrol Vertikal: ▲ -> Bar -> ▼ -->
+          <div class="v-scroll-controls">
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="expUpBtn" aria-label="Scroll Up">
+              <i class="fa-solid fa-chevron-up"></i>
+            </button>
+            <div class="v-scroll-track" id="expVTrack" title="Tahan & geser ke bawah/atas">
+              <div class="v-scroll-thumb" id="expVThumb"></div>
+            </div>
+            <button type="button" class="mini-arrow-btn v-arrow-btn" id="expDownBtn" aria-label="Scroll Down">
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -834,7 +854,7 @@
 
         <!-- Kolom Kiri: Nama & Penutup -->
         <div class="footer-col">
-          <h3 class="footer-name">Nama Lengkap Anda</h3>
+          <h3 class="footer-name">Hesekiel Josafat</h3>
           <p data-i18n="footer_desc">Thank you for visiting my personal portfolio website. Connect with me over socials.</p>
           <span class="footer-quote">Keep Rising 🚀</span>
         </div>
@@ -843,15 +863,13 @@
         <div class="footer-col footer-contact-col">
           <h4 data-i18n="footer_contact">Contact Info</h4>
           <ul class="footer-contact-list">
-            <li><i class="fa-solid fa-phone"></i> <span>+62 812-3456-7890</span></li>
-            <li><i class="fa-solid fa-envelope"></i> <span>emailanda@gmail.com</span></li>
             <li><i class="fa-solid fa-location-dot"></i> <span data-i18n="collab_loc">IT Del, North Sumatra, Indonesia</span></li>
           </ul>
 
           <div class="footer-socials">
             <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
             <a href="#" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-            <a href="mailto:emailanda@gmail.com" aria-label="Gmail"><i class="fa-solid fa-envelope"></i></a>
+            <a href="mailto:josafathesekiel@gmail.com" aria-label="Gmail"><i class="fa-solid fa-envelope"></i></a>
             <a href="#" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
             <a href="#" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
           </div>
@@ -860,7 +878,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 <span class="highlight-text">Nama Lengkap Anda</span> . All Rights Reserved.</p>
+        <p>&copy; 2026 <span class="highlight-text">Hesekiel Josafat</span> . All Rights Reserved.</p>
       </div>
     </div>
   </footer>

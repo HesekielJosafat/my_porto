@@ -20,7 +20,7 @@
   --text-muted: #506685;
   --border-color: rgba(59, 96, 144, 0.12);
   --shadow: 0 12px 32px rgba(59, 96, 144, 0.12);
-  --radius: 18px;
+  --radius: 12px;
   --card-glow: rgba(75, 128, 204, 0.14);
 }
 
@@ -770,13 +770,30 @@ body.dark-mode .toggle-thumb { transform: translateX(18px); }
 }
 
 .album-art {
-  width: 96px;
-  height: 96px;
+  position: relative;
+  width: 98px;
+  height: 98px;
   background: linear-gradient(135deg, var(--primary-soft), var(--primary));
-  border-radius: 18px;
+  border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 6px 16px rgba(75, 112, 156, 0.15);
+  border: 3px solid var(--primary-soft);
+  box-shadow: 0 6px 18px rgba(75, 112, 156, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-art::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 3px solid rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
 }
 
 .album-art img {
@@ -784,11 +801,22 @@ body.dark-mode .toggle-thumb { transform: translateX(18px); }
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 50%;
+  animation: spinDisc 10s linear infinite;
+  animation-play-state: paused;
 }
 
 .album-art.playing {
-  transform: scale(1.05);
-  box-shadow: 0 8px 22px rgba(59, 130, 246, 0.28);
+  box-shadow: 0 8px 24px rgba(83, 135, 208, 0.35);
+}
+
+.album-art.playing img {
+  animation-play-state: running;
+}
+
+@keyframes spinDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .music-info h4 { font-size: 0.95rem; }
@@ -797,21 +825,31 @@ body.dark-mode .toggle-thumb { transform: translateX(18px); }
 .music-controls {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
 }
 
 .ctrl-btn {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 1.1rem;
+  font-size: 1rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
+  display: grid;
+  place-items: center;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
 }
 
 .ctrl-btn:hover {
   color: var(--primary-bright);
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+.ctrl-btn.active {
+  color: var(--primary-bright);
+  background: var(--primary-soft);
 }
 
 .play-btn {
@@ -829,7 +867,9 @@ body.dark-mode .toggle-thumb { transform: translateX(18px); }
 
 .play-btn:hover { transform: scale(1.08); }
 
-.music-progress-wrap { width: 100%; }
+.music-progress-wrap {
+  width: 100%;
+}
 
 .progress-bar {
   width: 100%;
@@ -853,6 +893,114 @@ body.dark-mode .toggle-thumb { transform: translateX(18px); }
   font-size: 0.72rem;
   color: var(--text-muted);
   margin-top: 6px;
+}
+
+/* Laci Daftar Lagu */
+.playlist-drawer {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-card);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.playlist-drawer.open {
+  transform: translateY(0);
+}
+
+.playlist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.92rem;
+  color: var(--primary);
+}
+
+.playlist-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-input);
+  color: var(--text-main);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: 0.2s;
+}
+
+.playlist-close:hover {
+  background: var(--primary-bright);
+  color: white;
+}
+
+.playlist-items {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 2px;
+}
+
+.playlist-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.playlist-row:hover { background: var(--primary-soft); }
+
+.playlist-row.active {
+  background: var(--primary-soft);
+  border-color: var(--primary-bright);
+}
+
+.playlist-row img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.playlist-row-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.playlist-row-info strong {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-row-info small {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.playlist-row-icon {
+  color: var(--primary-bright);
+  font-size: 0.8rem;
 }
 
 /* Hero Main Card */
@@ -1530,6 +1678,10 @@ body.dark-mode .devicon-github-original.colored { color: #f1f5f9; }
 }
 
 /* ================= EXPERIENCES (TIMELINE) ================= */
+.exp-scroll-wrap {
+  height: 375px;
+}
+
 .timeline {
   display: flex;
   flex-direction: column;
@@ -2379,4 +2531,36 @@ body.dark-mode .devicon-github-original.colored { color: #f1f5f9; }
 @keyframes eqBounce {
   0% { height: 4px; }
   100% { height: 14px; }
+}
+
+/* ================= SUDUT KOTAK SEDIKIT MELENGKUNG (CRISP BENTO) ================= */
+.navbar,
+.ach-modal-content,
+.notif-dropdown {
+  border-radius: 12px;
+}
+
+.project-card,
+.ach-card,
+.note-card,
+.guest-compose-box,
+.skill-item,
+.modal-preview-area {
+  border-radius: 10px;
+}
+
+.nav-links a,
+.btn-primary,
+.btn-outline,
+.btn-proj,
+.btn-post-note,
+.footer-socials a,
+.guest-compose-box input,
+.guest-compose-box textarea,
+.ach-img-box,
+.notif-item,
+.mini-page-pill,
+.theme-btn,
+.lang-box {
+  border-radius: 8px;
 }

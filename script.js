@@ -34,7 +34,7 @@ navItems.forEach(item => {
   });
 });
 
-// ================= 4. REAL-TIME MUSIC PLAYER =================
+// ================= 4. REAL-TIME MUSIC PLAYER (VINYL + SHUFFLE + PLAYLIST) =================
 const playlist = [
   {
     title: "2:23 AM",
@@ -54,6 +54,12 @@ const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevSongBtn = document.getElementById('prevSongBtn');
 const nextSongBtn = document.getElementById('nextSongBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const playlistBtn = document.getElementById('playlistBtn');
+const playlistDrawer = document.getElementById('playlistDrawer');
+const closePlaylistBtn = document.getElementById('closePlaylistBtn');
+const musicPlaylistEl = document.getElementById('musicPlaylistEl');
+
 const songTitle = document.getElementById('songTitle');
 const songArtist = document.getElementById('songArtist');
 const songCover = document.getElementById('songCover');
@@ -63,8 +69,37 @@ const songProgressFill = document.getElementById('songProgressFill');
 const currentTimeEl = document.getElementById('currentTime');
 const totalDurationEl = document.getElementById('totalDuration');
 
-let songIndex = 0;
+// Pilih lagu secara acak setiap kali halaman web dibuka
+let songIndex = Math.floor(Math.random() * playlist.length);
 let isPlaying = false;
+let isShuffle = false;
+
+function renderPlaylist() {
+  if (!musicPlaylistEl) return;
+  musicPlaylistEl.innerHTML = '';
+
+  playlist.forEach((song, idx) => {
+    const row = document.createElement('div');
+    row.className = `playlist-row ${idx === songIndex ? 'active' : ''}`;
+    row.innerHTML = `
+      <img src="${song.cover}" alt="${song.title}">
+      <div class="playlist-row-info">
+        <strong>${song.title}</strong>
+        <small>${song.artist}</small>
+      </div>
+      <span class="playlist-row-icon">
+        <i class="fa-solid ${idx === songIndex && isPlaying ? 'fa-volume-high' : 'fa-play'}"></i>
+      </span>
+    `;
+    row.addEventListener('click', () => {
+      songIndex = idx;
+      loadSong(songIndex);
+      playSong();
+      if (playlistDrawer) playlistDrawer.classList.remove('open');
+    });
+    musicPlaylistEl.appendChild(row);
+  });
+}
 
 function loadSong(index) {
   const song = playlist[index];
@@ -79,6 +114,7 @@ function loadSong(index) {
   if (songProgressFill) songProgressFill.style.width = '0%';
   if (currentTimeEl) currentTimeEl.textContent = '0:00';
   if (totalDurationEl) totalDurationEl.textContent = '0:00';
+  renderPlaylist();
 }
 
 function playSong() {
@@ -87,6 +123,9 @@ function playSong() {
     isPlaying = true;
     if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
     if (albumArt) albumArt.classList.add('playing');
+    const eq = document.getElementById('musicEq');
+    if (eq) eq.classList.add('active');
+    renderPlaylist();
   }).catch(() => {
     alert('File lagu tidak ditemukan! Pastikan file .mp3 ada di folder music/ dan namanya sesuai di script.js.');
   });
@@ -98,6 +137,20 @@ function pauseSong() {
   audioPlayer.pause();
   if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
   if (albumArt) albumArt.classList.remove('playing');
+  const eq = document.getElementById('musicEq');
+  if (eq) eq.classList.remove('active');
+  renderPlaylist();
+}
+
+function getNextIndex(step) {
+  if (isShuffle && playlist.length > 1) {
+    let randIdx;
+    do {
+      randIdx = Math.floor(Math.random() * playlist.length);
+    } while (randIdx === songIndex);
+    return randIdx;
+  }
+  return (songIndex + step + playlist.length) % playlist.length;
 }
 
 function formatTime(sec) {
@@ -115,7 +168,7 @@ if (playBtn) {
 
 if (prevSongBtn) {
   prevSongBtn.addEventListener('click', () => {
-    songIndex = (songIndex - 1 + playlist.length) % playlist.length;
+    songIndex = getNextIndex(-1);
     loadSong(songIndex);
     playSong();
   });
@@ -123,9 +176,29 @@ if (prevSongBtn) {
 
 if (nextSongBtn) {
   nextSongBtn.addEventListener('click', () => {
-    songIndex = (songIndex + 1) % playlist.length;
+    songIndex = getNextIndex(1);
     loadSong(songIndex);
     playSong();
+  });
+}
+
+if (shuffleBtn) {
+  shuffleBtn.addEventListener('click', () => {
+    isShuffle = !isShuffle;
+    shuffleBtn.classList.toggle('active', isShuffle);
+  });
+}
+
+if (playlistBtn && playlistDrawer) {
+  playlistBtn.addEventListener('click', () => {
+    renderPlaylist();
+    playlistDrawer.classList.toggle('open');
+  });
+}
+
+if (closePlaylistBtn && playlistDrawer) {
+  closePlaylistBtn.addEventListener('click', () => {
+    playlistDrawer.classList.remove('open');
   });
 }
 
@@ -144,7 +217,7 @@ if (audioPlayer) {
   });
 
   audioPlayer.addEventListener('ended', () => {
-    songIndex = (songIndex + 1) % playlist.length;
+    songIndex = getNextIndex(1);
     loadSong(songIndex);
     playSong();
   });
@@ -160,6 +233,7 @@ if (songProgressBar && audioPlayer) {
   });
 }
 
+// Muat lagu acak saat halaman dibuka
 loadSong(songIndex);
 
 // ================= 5. MULTI-LANGUAGE (EN, ID, CH, JP) =================
@@ -167,6 +241,7 @@ const verticalScrollUpdaters = [];
 
 const translations = {
   en: {
+    playlist_title: "Playlist",
     nav_home: "Home",
     nav_about: "About",
     nav_skills: "Skills",
@@ -274,6 +349,7 @@ const translations = {
     footer_contact: "Contact Info"
   },
   id: {
+    playlist_title: "Daftar Lagu",
     nav_home: "Beranda",
     nav_about: "Tentang",
     nav_skills: "Keahlian",
@@ -381,6 +457,7 @@ const translations = {
     footer_contact: "Info Kontak"
   },
   ch: {
+    playlist_title: "播放列表",
     nav_home: "首页",
     nav_about: "关于",
     nav_skills: "技能",
@@ -482,6 +559,7 @@ const translations = {
     footer_contact: "联系方式"
   },
   jp: {
+    playlist_title: "プレイリスト",
     nav_home: "ホーム",
     nav_about: "私について",
     nav_skills: "スキル",
@@ -613,6 +691,7 @@ const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえお文✦•';
 function scrambleText(el, finalText) {
   if (!el || !finalText) return;
   clearInterval(el._scrambleTimer);
+  el.dataset.cleanText = finalText;
   let frame = 0;
   const totalFrames = 14;
 
@@ -638,9 +717,7 @@ function scrambleText(el, finalText) {
   }, 24);
 }
 
-function setLanguage(lang) {
-  if (langFlag) langFlag.innerHTML = flagSvgs[lang] || flagSvgs.en;
-  if (typeof renderNotifications === 'function') renderNotifications();
+function setLanguage(lang, shouldScramble = false) {
   document.body.classList.remove('lang-en', 'lang-id', 'lang-ch', 'lang-jp');
   document.body.classList.add(`lang-${lang}`);
 
@@ -648,9 +725,11 @@ function setLanguage(lang) {
     const key = el.getAttribute('data-i18n');
     if (translations[lang] && translations[lang][key]) {
       const nextText = translations[lang][key];
-      if (el.closest('.card-header h3') || key === 'hero_hi') {
+      el.dataset.cleanText = nextText; // Selalu simpan teks bersih aslinya!
+      if (shouldScramble && (el.closest('.card-header h3') || key === 'hero_hi')) {
         scrambleText(el, nextText);
       } else {
+        clearInterval(el._scrambleTimer);
         el.textContent = nextText;
       }
     }
@@ -666,11 +745,13 @@ function setLanguage(lang) {
   updateBirthdayByLang(lang);
   updateLiveClock();
   verticalScrollUpdaters.forEach(fn => fn());
+  if (langFlag) langFlag.innerHTML = flagSvgs[lang] || flagSvgs.en;
+  if (typeof renderNotifications === 'function') renderNotifications();
 }
 
 if (langSelect) {
   langSelect.addEventListener('change', (e) => {
-    setLanguage(e.target.value);
+    setLanguage(e.target.value, true); // Acak huruf saat user ganti bahasa
   });
 }
 
@@ -903,14 +984,6 @@ initBentoCardSlider({
   pageClass: 'ach-mini-grid'
 });
 
-initBentoCardSlider({
-  trackId: 'expTrack',
-  pagerId: 'expPager',
-  itemSelector: '.timeline-item',
-  perPage: 3,
-  pageClass: 'timeline'
-});
-
 // ================= 9. ACHIEVEMENTS & EXPERIENCES MODAL PREVIEW =================
 const achModal = document.getElementById('achModal');
 const achModalClose = document.getElementById('achModalClose');
@@ -1116,6 +1189,14 @@ initVerticalScrollCard({
   thumbId: 'skillsThumb',
   upBtnId: 'skillsUpBtn',
   downBtnId: 'skillsDownBtn'
+});
+
+initVerticalScrollCard({
+  boxId: 'expScrollBox',
+  trackId: 'expVTrack',
+  thumbId: 'expVThumb',
+  upBtnId: 'expUpBtn',
+  downBtnId: 'expDownBtn'
 });
 
 window.addEventListener('resize', () => {
@@ -1358,8 +1439,9 @@ const revealObserver = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
       const headerSpan = entry.target.querySelector('.card-header h3 span[data-i18n]');
-      if (headerSpan && headerSpan.textContent) {
-        scrambleText(headerSpan, headerSpan.textContent);
+      if (headerSpan) {
+        const targetText = headerSpan.dataset.cleanText || headerSpan.textContent;
+        scrambleText(headerSpan, targetText);
       }
       revealObserver.unobserve(entry.target);
     }
