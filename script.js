@@ -243,6 +243,9 @@ const translations = {
     ach5_issuer: "Student's Council of Institut Teknologi Del",
     ach5_title: "Member of the Order Division 2025",
     ach5_date: "July 2026",
+    ach6_issuer: "Del English Club",
+    ach6_title: "Member of the English Club 2025",
+    ach6_date: "April 2025",
     exp_title: "Experiences",
     btn_photo: "View Photo",
     exp1_date: "2025 - Present",
@@ -347,6 +350,9 @@ const translations = {
     ach5_issuer: "Badan Eksekutif Mahasiswa Institut Teknologi Del",
     ach5_title: "Anggota Departemen Ketertiban & Kedisiplinan 2025",
     ach5_date: "Juli 2026",
+    ach6_issuer: "Del English Club",
+    ach6_title: "Anggota Del English Club 2025",
+    ach6_date: "April 2025",
     exp_title: "Pengalaman",
     btn_photo: "Lihat Foto",
     exp1_date: "2025 - Sekarang",
@@ -447,6 +453,7 @@ const translations = {
     ach5_issuer: "Del理工学院学生会",
     ach5_title: "纪律与秩序部门成员 2025",
     ach5_date: "July 2026",
+    ach6_issuer: "Del English Club",
     exp_title: "经验",
     btn_photo: "查看照片",
     exp1_date: "2025年 - 至今",
@@ -1263,3 +1270,179 @@ if (notifMarkRead) {
 // ================= 11. JALANKAN SAAT HALAMAN PERTAMA DIBUKA =================
 setLanguage(langSelect ? (langSelect.value || 'en') : 'en');
 setInterval(updateLiveClock, 1000);
+
+// ================= 12. INTERACTIVE TRANSITIONS, SCROLL REVEAL & CLICK RIPPLE FX =================
+
+// A. Garis Progres Scroll & Auto-Highlight Menu Header saat Scroll
+const scrollProgress = document.getElementById('scrollProgress');
+const trackedSections = ['home', 'about', 'skills', 'projects', 'achievements', 'experiences', 'guestbook']
+  .map(id => document.getElementById(id))
+  .filter(Boolean);
+
+function handleScrollUI() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const sideArtLeft = document.getElementById('sideArtLeft');
+  const sideArtRight = document.getElementById('sideArtRight');
+  if (sideArtLeft) sideArtLeft.style.transform = `translateY(${scrollTop * -0.05}px)`;
+  if (sideArtRight) sideArtRight.style.transform = `translateY(${scrollTop * 0.04}px)`;
+  if (scrollProgress && docHeight > 0) {
+    scrollProgress.style.width = `${(scrollTop / docHeight) * 100}%`;
+  }
+
+  let currentId = 'home';
+  trackedSections.forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    if (top <= 180) currentId = sec.id;
+  });
+
+  navItems.forEach(link => {
+    const href = link.getAttribute('href');
+    link.classList.toggle('active', href === `#${currentId}`);
+  });
+}
+
+window.addEventListener('scroll', handleScrollUI, { passive: true });
+handleScrollUI();
+
+// B. Animasi Kartu Muncul Halus saat Di-Scroll (Scroll Reveal)
+const allBentoCards = document.querySelectorAll('.card');
+allBentoCards.forEach(card => card.classList.add('reveal-card'));
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+allBentoCards.forEach(card => revealObserver.observe(card));
+
+// C. Efek Parallax Halus Saat Mouse Bergerak di Atas Hero Card
+const heroMainCard = document.querySelector('.hero-main-card');
+const heroAvatar = document.querySelector('.hero-avatar');
+const heroWaveSvg = document.getElementById('heroWaveSvg');
+const heroGlyphTop = document.getElementById('heroGlyphTop');
+const heroGlyphBottom = document.getElementById('heroGlyphBottom');
+
+if (heroMainCard) {
+  heroMainCard.addEventListener('mousemove', (e) => {
+    const rect = heroMainCard.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    if (heroAvatar) heroAvatar.style.transform = `translate(${x * -10}px, ${y * -6}px)`;
+    if (heroWaveSvg) heroWaveSvg.style.transform = `translateX(${x * 12}px)`;
+    if (heroGlyphTop) heroGlyphTop.style.transform = `rotate(-10deg) translate(${x * 14}px, ${y * 10}px)`;
+    if (heroGlyphBottom) heroGlyphBottom.style.transform = `rotate(6deg) translate(${x * -14}px, ${y * 8}px)`;
+  });
+
+  heroMainCard.addEventListener('mouseleave', () => {
+    if (heroAvatar) heroAvatar.style.transform = 'translate(0, 0)';
+    if (heroWaveSvg) heroWaveSvg.style.transform = 'translateX(0)';
+    if (heroGlyphTop) heroGlyphTop.style.transform = 'rotate(-10deg) translate(0, 0)';
+    if (heroGlyphBottom) heroGlyphBottom.style.transform = 'rotate(6deg) translate(0, 0)';
+  });
+}
+
+// D. Canvas: Partikel Cahaya Mengambang + Efek Riak & Bintang Setiap Kali Klik
+const fxCanvas = document.getElementById('fxCanvas');
+if (fxCanvas) {
+  const ctx = fxCanvas.getContext('2d');
+  let width = fxCanvas.width = window.innerWidth;
+  let height = fxCanvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    width = fxCanvas.width = window.innerWidth;
+    height = fxCanvas.height = window.innerHeight;
+  });
+
+  // Partikel debu cahaya lembut di latar
+  const ambientMotes = Array.from({ length: 24 }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    r: Math.random() * 1.8 + 0.8,
+    vx: (Math.random() - 0.5) * 0.25,
+    vy: -Math.random() * 0.35 - 0.1,
+    alpha: Math.random() * 0.35 + 0.1
+  }));
+
+  const ripples = [];
+  const sparks = [];
+
+  window.addEventListener('click', (e) => {
+    ripples.push({ x: e.clientX, y: e.clientY, r: 4, alpha: 0.55 });
+    for (let i = 0; i < 7; i++) {
+      const angle = (Math.PI * 2 * i) / 7 + Math.random() * 0.4;
+      const speed = Math.random() * 2.2 + 1.2;
+      sparks.push({
+        x: e.clientX,
+        y: e.clientY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: Math.random() * 2.2 + 1.5,
+        alpha: 0.9
+      });
+    }
+  });
+
+  function animateFX() {
+    ctx.clearRect(0, 0, width, height);
+    const isDark = document.body.classList.contains('dark-mode');
+    const baseColor = isDark ? '134, 180, 240' : '83, 135, 208';
+
+    // Gambar partikel latar mengambang
+    ambientMotes.forEach(m => {
+      m.x += m.vx;
+      m.y += m.vy;
+      if (m.y < -10) { m.y = height + 10; m.x = Math.random() * width; }
+      if (m.x < -10) m.x = width + 10;
+      if (m.x > width + 10) m.x = -10;
+
+      ctx.beginPath();
+      ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${baseColor}, ${m.alpha})`;
+      ctx.fill();
+    });
+
+    // Gambar riak klik
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const rp = ripples[i];
+      rp.r += 2.2;
+      rp.alpha -= 0.02;
+      if (rp.alpha <= 0) {
+        ripples.splice(i, 1);
+        continue;
+      }
+      ctx.beginPath();
+      ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${baseColor}, ${rp.alpha})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // Gambar percikan bintang klik
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const sp = sparks[i];
+      sp.x += sp.vx;
+      sp.y += sp.vy;
+      sp.vx *= 0.95;
+      sp.vy *= 0.95;
+      sp.alpha -= 0.032;
+      if (sp.alpha <= 0) {
+        sparks.splice(i, 1);
+        continue;
+      }
+      ctx.beginPath();
+      ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${baseColor}, ${sp.alpha})`;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(animateFX);
+  }
+
+  animateFX();
+}

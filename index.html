@@ -14,6 +14,44 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
 </head>
 <body>
+  <!-- Garis Progres Scroll & Canvas Efek Partikel/Klik -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <canvas id="fxCanvas"></canvas>
+
+  <!-- Ornamen Samping Kiri: Konstelasi Bintang & Angin Lembut -->
+  <div class="side-art side-art-left" id="sideArtLeft" aria-hidden="true">
+    <svg viewBox="0 0 140 260" width="135" height="250">
+      <!-- Garis penghubung konstelasi -->
+      <polyline points="42,34 96,80 54,136 104,190" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="3 5" opacity="0.4"/>
+      <!-- Bintang-bintang berkelip -->
+      <path class="star-twinkle s1" d="M42 25 Q42 34 51 34 Q42 34 42 43 Q42 34 33 34 Q42 34 42 25 Z" fill="currentColor"/>
+      <path class="star-twinkle s2" d="M96 73 Q96 80 103 80 Q96 80 96 87 Q96 80 89 80 Q96 80 96 73 Z" fill="currentColor"/>
+      <path class="star-twinkle s3" d="M54 128 Q54 136 62 136 Q54 136 54 144 Q54 136 46 136 Q54 136 54 128 Z" fill="currentColor"/>
+      <circle cx="104" cy="190" r="3" fill="currentColor" opacity="0.65"/>
+      <!-- Lengkungan angin tenang -->
+      <path d="M12,222 C40,206 72,238 118,216" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>
+      <path d="M26,240 C56,228 86,248 128,232" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.28"/>
+    </svg>
+  </div>
+
+  <!-- Ornamen Samping Kanan: Pesawat Kertas Origami, Jejak Angin & Not Musik -->
+  <div class="side-art side-art-right" id="sideArtRight" aria-hidden="true">
+    <svg viewBox="0 0 140 260" width="135" height="250">
+      <!-- Jejak angin melengkung -->
+      <path d="M26,238 C88,208 22,144 76,104 C96,88 94,74 90,62" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 5" stroke-linecap="round" opacity="0.45"/>
+      <!-- Pesawat kertas origami -->
+      <g class="plane-float">
+        <polygon points="108,24 68,44 88,50" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <polygon points="108,24 88,50 98,62" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </g>
+      <!-- Not musik kecil & bintang -->
+      <g opacity="0.55" transform="translate(30, 122)">
+        <circle cx="6" cy="18" r="3.5" fill="currentColor"/>
+        <path d="M9.5,18 L9.5,4 L18,7 L18,10 L9.5,7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <path class="star-twinkle s2" d="M114 162 Q114 168 120 168 Q114 168 114 174 Q114 168 108 168 Q114 168 114 162 Z" fill="currentColor"/>
+    </svg>
+  </div>
 
   <!-- ================= HEADER / NAVBAR (FLOATING BENTO STYLE) ================= -->
   <header class="navbar-wrapper">
@@ -33,7 +71,7 @@
       <div class="nav-right">
         <!-- Avatar Bulat -->
         <a href="#home" class="nav-avatar" title="Profile">
-          <img src="images/ಇ_﹕kaoru hana wa rin to saku.jpeg" alt="Profile">
+          <img src="images/kaoru-nobg.png" alt="Profile">
         </a>
 
         <!-- Tombol Lonceng Notifikasi Guestbook -->
@@ -216,7 +254,20 @@
       <!-- Kolom Kanan: Hero Banner Utama -->
       <div class="hero-right">
         <div class="card hero-main-card">
+          <!-- Ornamen Orisinal: Halo Ring, Bingkai Geometris & Watermark Linguistik -->
+          <!-- Ornamen Orisinal: Cincin Orbital & Gelombang Lembut -->
+          <div class="hero-orb-ring" id="heroOrbRing"></div>
+          <svg class="hero-wave-svg" id="heroWaveSvg" viewBox="0 0 500 120" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,75 C140,125 290,15 500,68 L500,120 L0,120 Z"></path>
+          </svg>
           <div class="hero-text">
+          <!-- Ornamen Orisinal Hero: Cincin Orbital, Gelombang SVG, + 2 Aksara Atas & Bawah -->
+          <div class="hero-orb-ring" id="heroOrbRing"></div>
+          <span class="hero-deco-glyph hero-glyph-top" id="heroGlyphTop" aria-hidden="true">あ</span>
+          <span class="hero-deco-glyph hero-glyph-bottom" id="heroGlyphBottom" aria-hidden="true">文</span>
+          <svg class="hero-wave-svg" id="heroWaveSvg" viewBox="0 0 500 120" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,75 C140,125 290,15 500,68 L500,120 L0,120 Z"></path>
+          </svg>  
             <span class="jp-sub" data-i18n="hero_welcome">Welcome to my space ✨</span>
             <h1>
               <span data-i18n="hero_hi">Hi, I'm</span><br>
@@ -235,7 +286,7 @@
 
           <!-- Foto / Avatar Karakter Anda -->
           <div class="hero-avatar">
-            <img src="images/ಇ_﹕kaoru hana wa rin to saku.jpeg" alt="Avatar" style="width:240px; border-radius:20px;">
+            <img src="images/kaoru-nobg.png" alt="Avatar" style="width:240px; border-radius:20px;">
           </div>
         </div>
       </div>
@@ -552,6 +603,20 @@
               <h4 class="ach-issuer" data-i18n="ach5_issuer"></h4>
               <p class="ach-title" data-i18n="ach5_title"></p>
               <span class="ach-date" data-i18n="ach5_date"></span>
+            </div>
+
+            <!-- Achievement 6 (DEC 2024) -->
+            <div class="ach-card" tabindex="0">
+              <div class="ach-img-box" data-pdf="pdf/Certificate of Participation DEC 24_25.pdf">
+                <div class="ach-placeholder">
+                  <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                  <span data-i18n="pdf_cert"></span>
+                </div>
+                <div class="ach-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> <span data-i18n="click_preview"></span></div>
+              </div>
+              <h4 class="ach-issuer" data-i18n="ach6_issuer"></h4>
+              <p class="ach-title" data-i18n="ach6_title"></p>
+              <span class="ach-date" data-i18n="ach6_date"></span>
             </div>
 
             <!-- Nanti kalau mau tambah Achievement ke-5, ke-6, dst., tinggal copy-paste .ach-card di sini! -->
